@@ -57,26 +57,24 @@ public class GameOfLife extends Matrix {
      *                                  negative, or if the shape does not fit entirely on the field
      */
     public void addShape(Shape shape, int row, int column) {
-        // TODO: reject null, negative coordinates, and shapes that would stick out of the field;
-        // TODO: then copy every cell of the shape onto the field.
-
         // Reject invalid placements before accessing the shape's cells.
-        if(shape == null) {
+        if (shape == null) {
             throw new IllegalArgumentException();
         }
-        if(row < 0 || column < 0) {
+        if (row < 0 || column < 0) {
             throw new IllegalArgumentException();
         }
 
         // Check the ending coordinates to ensure the entire shape fits.
-        if(row + shape.getRows() > getRows() || column + shape.getColumns() > getColumns()) {
+        if (row + shape.getRows() > getRows()
+                || column + shape.getColumns() > getColumns()) {
             throw new IllegalArgumentException();
         }
 
         // Copy each cell so the shape keeps its original arrangement.
-        for(int i = 0; i < shape.getRows(); i++) {
-            for(int j = 0; j < shape.getColumns(); j++) {
-                int cellValue = shape.get(i,j);
+        for (int i = 0; i < shape.getRows(); i++) {
+            for (int j = 0; j < shape.getColumns(); j++) {
+                int cellValue = shape.get(i, j);
                 set(row + i, column + j, cellValue);
             }
         }
@@ -89,8 +87,6 @@ public class GameOfLife extends Matrix {
      * then install it with the inherited {@link Matrix#setData(int[][])}.</p>
      */
     public void step() {
-        // TODO: allocate a local int[getRows()][getColumns()], fill it by applying the rules to
-        // TODO: the current generation, then call setData(next).
         int[][] next = new int[getRows()][getColumns()];
 
         for (int i = 0; i < getRows(); i++) {
@@ -127,8 +123,6 @@ public class GameOfLife extends Matrix {
      * @return a number between 0 and 8
      */
     public int countLiveNeighbours(int row, int column) {
-        // TODO: look at the eight surrounding coordinates and count the live ones,
-        // TODO: skipping coordinates that fall outside the field.
         int liveNeighbours = 0;
 
         // Examine the surrounding 3-by-3 area, including the centre initially.
@@ -149,7 +143,6 @@ public class GameOfLife extends Matrix {
                 }
             }
         }
-
         return liveNeighbours;
     }
 
@@ -161,9 +154,6 @@ public class GameOfLife extends Matrix {
      * @throws InterruptedException if the animation is interrupted while sleeping between frames
      */
     public static void main(String[] args) throws InterruptedException {
-        // TODO: create a game field, add at least a Blinker and a Glider, then run a fixed
-        // TODO: number of generations - read it from args[0] if present, else use 20:
-        // TODO:   print the field with a BoolMatrixPrinter, call step(), and Thread.sleep a little.
         int generations = 20;
 
         if (args.length > 0) {
@@ -174,7 +164,7 @@ public class GameOfLife extends Matrix {
             }
         }
 
-        GameOfLife game = new GameOfLife(15, 30);
+        GameOfLife game = new GameOfLife(10, 15);
 
         System.out.println("==================================");
         System.out.println(" Welcome to Conway's Game of Life!");
@@ -192,7 +182,7 @@ public class GameOfLife extends Matrix {
         // Pause only when another generation remains to avoid a final delay.
         for (int generation = 0; generation <= generations; generation++) {
             System.out.println("Generation " + generation);
-            printer.print(game);
+            System.out.println(printer.print(game));
 
             if (generation < generations) {
                 game.step();
